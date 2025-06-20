@@ -7,7 +7,6 @@ from aiogram.client.default import DefaultBotProperties
 from line_generator import ImgDrawLines
 
 
-TOKEN = "Your telegram-bot token"
 
 
 bot = Bot(
