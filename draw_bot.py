@@ -7,6 +7,7 @@ from aiogram.client.default import DefaultBotProperties
 from line_generator import ImgDrawLines
 
 
+TOKEN = "TOKEN"
 
 
 bot = Bot(
