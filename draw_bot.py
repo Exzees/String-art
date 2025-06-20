@@ -7,7 +7,7 @@ from aiogram.client.default import DefaultBotProperties
 from line_generator import ImgDrawLines
 
 
-TOKEN = "YOUR TELEGRAM-BOT TOKEN"
+TOKEN = "Your_telegram_bot_token"
 
 
 bot = Bot(
@@ -50,7 +50,7 @@ async def handle_photo(message: types.Message):
         await bot.send_chat_action(message.chat.id, "upload_photo")
         
         # Running long processing in a separate thread
-        await asyncio.to_thread(process_image, input_path, output_path)
+        await asyncio.to_thread(process_image, input_path)
         
         # Sending the result
         with open(output_path, 'rb') as photo_file:

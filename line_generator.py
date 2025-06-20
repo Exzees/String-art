@@ -9,13 +9,15 @@ import os
 
 
 class ImgDrawLines:
-    def __init__(self, file_name, dots_count=300, line_count=10000, opacity=26):
+    def __init__(self, file_name, resize=(1080,1080), line_thickness = 1, dots_count=300, line_count=10000, opacity=26):
         """
         Image string art generator
         Result has be saved format file_name_RES.png
 
         Args:
             file_name: Path to source image file (JPG/PNG formats supported)
+            resize: Resize image file Default: (1080,1080) set to None to disable
+            line_thickness: Brush thickness. Default: 1
             dots_count: Number of random points to generate (min 2). Default: 300
             line_count: Number of lines to draw between points. Default: 10000
             opacity: Line opacity value (0-255 scale, 0=transparent). Default: 26
@@ -25,6 +27,8 @@ class ImgDrawLines:
         """
         
         self.file_name = file_name.split('.')[0]
+        self.resize = resize
+        self.line_thickness = line_thickness
         self.dots_count = dots_count
         self.line_count = line_count
         self.opacity = opacity
@@ -37,7 +41,7 @@ class ImgDrawLines:
         self.q = queue.Queue()
         
         self.brush = aggdraw.Brush("grey")
-        self.pen = aggdraw.Pen("black", width=1, opacity=self.opacity)
+        self.pen = aggdraw.Pen("black", width=self.line_thickness, opacity=self.opacity)
         
         self._worker()
 
@@ -58,7 +62,13 @@ class ImgDrawLines:
         
         # Обрезка и изменение размера
         cropped_img = img.crop(box)
-        resized_img = cropped_img.resize((1080, 1080), Image.LANCZOS)
+        
+        if self.resize:
+            try:
+                re_width, re_height = self.resize
+                resized_img = cropped_img.resize((re_width, re_height), Image.LANCZOS)
+            except Exception as e:
+                print(f"Check the specified values for resize \n Error:{e} ")
         
         # Конвертация в grayscale
         return resized_img.convert('L')
@@ -267,4 +277,3 @@ class ImgDrawLines:
         
         calc_thread.join()
         draw_thread.join()
-
